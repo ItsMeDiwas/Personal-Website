@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Diwas Rathod — Creative Developer & Engineer",
-  description: "A high-end scrollytelling digital portfolio showcasing cutting-edge engineering and premium interactive design.",
+  title: "Diwas Rathod | AI Enthusiast, PM & Creative Editor",
+  description: "AI Enthusiast & Program Manager | Creative Video Editor & Former Full-Stack Developer. Bridging technical precision with cinematic storytelling.",
 };
 
 export default function RootLayout({
