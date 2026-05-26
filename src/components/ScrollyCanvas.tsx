@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useScroll, useSpring, useTransform, useMotionValueEvent } from "framer-motion";
 
 interface ScrollyCanvasProps {
@@ -189,7 +189,12 @@ export default function ScrollyCanvas({ children }: ScrollyCanvasProps) {
       </div>
 
       {/* Text Parallax Overlay Content */}
-      {isPreloaded && children}
+      {isPreloaded && children && React.Children.map(children, child => {
+        if (React.isValidElement(child)) {
+          return React.cloneElement(child, { scrollYProgress } as any);
+        }
+        return child;
+      })}
     </div>
   );
 }

@@ -1,11 +1,16 @@
 "use client";
 
-import { useScroll, useTransform, motion } from "framer-motion";
+import { useScroll, useTransform, motion, MotionValue } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 
-export default function Overlay() {
-  // Listen to global window scroll progress (synchronized with our 500vh parent)
-  const { scrollYProgress } = useScroll();
+interface OverlayProps {
+  scrollYProgress?: MotionValue<number>;
+}
+
+export default function Overlay({ scrollYProgress: passedScrollYProgress }: OverlayProps) {
+  // Listen to global window scroll progress as fallback
+  const { scrollYProgress: globalScrollYProgress } = useScroll();
+  const scrollYProgress = passedScrollYProgress || globalScrollYProgress;
 
   // Mappings for Section 1: Introduction (Center aligned)
   // Visible: 0 to 0.15, Fades out: 0.15 to 0.25
