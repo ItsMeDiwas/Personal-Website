@@ -246,11 +246,11 @@ export default function Projects() {
                 <a href="tel:+9779823619287" className="text-xs font-light text-neutral-400 hover:text-white transition-colors duration-200 flex items-center gap-1.5 w-fit">
                   Phone: +977 9823619287
                 </a>
-                <a href="#" className="text-xs font-light text-neutral-400 hover:text-white transition-colors duration-200 flex items-center gap-1.5 w-fit">
-                  GitHub: github.com/diwas
+                <a href="https://github.com/ItsMeDiwas" target="_blank" rel="noopener noreferrer" className="text-xs font-light text-neutral-400 hover:text-white transition-colors duration-200 flex items-center gap-1.5 w-fit">
+                  GitHub: github.com/ItsMeDiwas
                 </a>
-                <a href="#" className="text-xs font-light text-neutral-400 hover:text-white transition-colors duration-200 flex items-center gap-1.5 w-fit">
-                  LinkedIn: linkedin.com/in/diwas
+                <a href="https://linkedin.com/in/diwasdineshrathod" target="_blank" rel="noopener noreferrer" className="text-xs font-light text-neutral-400 hover:text-white transition-colors duration-200 flex items-center gap-1.5 w-fit">
+                  LinkedIn: linkedin.com/in/diwasdineshrathod
                 </a>
               </div>
             </div>
