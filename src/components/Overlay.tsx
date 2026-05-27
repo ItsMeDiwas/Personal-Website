@@ -66,51 +66,51 @@ export default function Overlay({
   return (
     <div className="absolute inset-0 z-10 w-full h-screen pointer-events-none select-none relative overflow-hidden">
       <AnimatePresence>
-        {/* SECTION 1: Left-aligned (Frames 0 to 19) - All White Font */}
+        {/* SECTION 1: Right-aligned (Frames 0 to 19) - Scaled Font */}
         {activeSection === 0 && (
           <motion.div
             key="section-0"
-            initial={{ opacity: 0, x: -40, filter: "blur(6px)" }}
-            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, x: -40, filter: "blur(6px)" }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="absolute inset-y-0 left-8 md:left-20 lg:left-32 flex flex-col justify-center items-start text-left max-w-xl px-4"
-          >
-            <span className="text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase text-white/70 mb-3 animate-pulse">
-              {textContent[0].badge}
-            </span>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight text-white leading-none">
-              {textContent[0].title}
-            </h1>
-            <p className="mt-4 text-xs md:text-sm font-mono tracking-[0.3em] uppercase text-white/80 font-medium">
-              {textContent[0].subtitle}
-            </p>
-          </motion.div>
-        )}
-
-        {/* SECTION 2: Right-aligned (Frames 20 to 39) - All White Font */}
-        {activeSection === 1 && (
-          <motion.div
-            key="section-1"
             initial={{ opacity: 0, x: 40, filter: "blur(6px)" }}
             animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
             exit={{ opacity: 0, x: 40, filter: "blur(6px)" }}
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="absolute inset-y-0 right-8 md:right-20 lg:right-32 flex flex-col justify-center items-end text-right max-w-xl ml-auto px-4"
           >
-            <span className="text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase text-white/70 mb-3 animate-pulse">
+            <span className="text-xs md:text-sm font-mono tracking-[0.4em] uppercase text-white/70 mb-3 animate-pulse">
+              {textContent[0].badge}
+            </span>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-white leading-none">
+              {textContent[0].title}
+            </h1>
+            <p className="mt-4 text-sm md:text-base lg:text-lg font-mono tracking-[0.3em] uppercase text-white/80 font-medium">
+              {textContent[0].subtitle}
+            </p>
+          </motion.div>
+        )}
+
+        {/* SECTION 2: Left-aligned (Frames 20 to 39) - Scaled Font */}
+        {activeSection === 1 && (
+          <motion.div
+            key="section-1"
+            initial={{ opacity: 0, x: -40, filter: "blur(6px)" }}
+            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, x: -40, filter: "blur(6px)" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="absolute inset-y-0 left-8 md:left-20 lg:left-32 flex flex-col justify-center items-start text-left max-w-xl px-4"
+          >
+            <span className="text-xs md:text-sm font-mono tracking-[0.4em] uppercase text-white/70 mb-3 animate-pulse">
               {textContent[1].badge}
             </span>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight text-white leading-none">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-white leading-none">
               {textContent[1].title}
             </h1>
-            <p className="mt-4 text-xs md:text-sm font-mono tracking-[0.3em] uppercase text-white/80 font-medium">
+            <p className="mt-4 text-sm md:text-base lg:text-lg font-mono tracking-[0.3em] uppercase text-white/80 font-medium">
               {textContent[1].subtitle}
             </p>
           </motion.div>
         )}
 
-        {/* SECTION 3: Bottom-center (Frames 40 to 73) - All White Font */}
+        {/* SECTION 3: Bottom-center (Frames 40 to 73) - Scaled Font */}
         {activeSection === 2 && (
           <motion.div
             key="section-2"
@@ -118,15 +118,15 @@ export default function Overlay({
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             exit={{ opacity: 0, y: 40, filter: "blur(6px)" }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="absolute bottom-36 left-0 right-0 flex flex-col justify-center items-center text-center max-w-3xl mx-auto px-6 animate-once"
+            className="absolute bottom-36 left-0 right-0 flex flex-col justify-center items-center text-center max-w-3xl mx-auto px-6"
           >
-            <span className="text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase text-white/70 mb-3 animate-pulse">
+            <span className="text-xs md:text-sm font-mono tracking-[0.4em] uppercase text-white/70 mb-3 animate-pulse">
               {textContent[2].badge}
             </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-none">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-white leading-none">
               {textContent[2].title}
             </h1>
-            <p className="mt-4 text-xs md:text-sm font-mono tracking-[0.3em] uppercase text-white/80 font-medium">
+            <p className="mt-4 text-sm md:text-base lg:text-lg font-mono tracking-[0.3em] uppercase text-white/80 font-medium">
               {textContent[2].subtitle}
             </p>
           </motion.div>
