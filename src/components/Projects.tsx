@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight, Mail, Compass, Shield, HelpCircle } from "lucide-react";
+import { ArrowUpRight, Mail, Compass, Shield, HelpCircle, Phone } from "lucide-react";
 import Image from "next/image";
 
 interface StarNarrative {
@@ -25,47 +25,47 @@ interface Project {
 const projects: Project[] = [
   {
     id: "ai-operations",
-    title: "Project Jarvis-Core",
-    category: "ADVANCED TECH & AI IMPLEMENTATION",
-    metric: "42%",
-    metricLabel: "Task Latency Reduction",
+    title: "AI Workflow Automation",
+    category: "ADVANCED TECH & AI",
+    metric: "40% faster tasks",
+    metricLabel: "Increased Efficiency",
     star: {
-      situation: "Faced an operational bottleneck in internal data retrieval and workflow scheduling, causing a 35% lag in cross-departmental delivery timelines.",
-      action: "Spearheaded the integration of a modular, multi-agent LLM orchestrator as the Program Lead, managing a cross-functional agile squad of 12 engineers using Scrum frameworks.",
-      result: "Automated 80% of routine operations, reducing end-to-end task latency by 42% and successfully accelerating project lifecycles by 3 weeks."
+      situation: "Our team faced a bottleneck in data processing and scheduling, causing delays.",
+      action: "Replaced manual processes with a multi-agent AI system and streamlined the team workflow.",
+      result: "Routine work is now 80% automated, reducing total task time by 40% and cutting project delivery times."
     },
     image: "/images/project_aether.png",
-    tags: ["AI Agents", "LLM Pipelines", "Agile Leadership", "System Architecture"],
+    tags: ["AI Agents", "Workflows", "Automation"],
     link: "#",
   },
   {
     id: "infrastructure-logistics",
-    title: "Nexus Hub Development",
-    category: "INFRASTRUCTURE & COMPLEX LOGISTICS",
-    metric: "14 Days",
-    metricLabel: "Ahead of Schedule",
+    title: "Tech Learning Hub",
+    category: "COMMUNITY PROJECT & LOGISTICS",
+    metric: "2 Weeks ahead",
+    metricLabel: "Project on Track",
     star: {
-      situation: "A growing community needed a centralized hub for technological education and collaboration, requiring a multi-stakeholder facility build with a tight 9-month delivery deadline.",
-      action: "Led the operational program, managing architectural planning, vendor sourcing, physical logistics, and structural resources across 15 external partner organizations using structured PMP methodologies.",
-      result: "Completed construction 14 days ahead of schedule and 8% under budget, delivering a state-of-the-art facility serving over 5,000 community members."
+      situation: "The community needed a modern space for tech education but had no central facility.",
+      action: "Managed the construction, including design, planning, and coordination with global partners.",
+      result: "Completed construction ahead of schedule, providing a space for over 5,000 members."
     },
     image: "/images/project_halcyon.png",
-    tags: ["Facility Planning", "Resource Sourcing", "Logistics", "Budget Control"],
+    tags: ["Construction", "Logistics", "Operations"],
     link: "#",
   },
   {
     id: "socio-economic-programs",
-    title: "Initiative Elevate",
-    category: "SOCIO-ECONOMIC & TRAINING PROGRAMS",
-    metric: "82%",
-    metricLabel: "Employment Placement Rate",
+    title: "Digital Upskilling",
+    category: "SKILLS TRAINING PROGRAM",
+    metric: "80% got jobs",
+    metricLabel: "Placement Rate",
     star: {
-      situation: "A massive skills gap existed in local emerging markets, with underprivileged demographics lacking access to modern digital literacy and vocational training pathways.",
-      action: "Conceptualized and scaled a comprehensive vocational curriculum, coordinating government grants, private sponsors, and digital infrastructure rollouts as the Program Director.",
-      result: "Graduated 1,200+ certified specialists in modern cloud technologies and digital workflows, achieving a verified 82% post-program employment rate within 6 months."
+      situation: "A lack of digital skills training in the local market limited employment opportunities for youth.",
+      action: "Developed a comprehensive curriculum for modern tech skills and digital work.",
+      result: "Trained over 1,200 specialists with an 80% direct employment placement rate in modern jobs."
     },
     image: "/images/project_nova.png",
-    tags: ["Socio-Economic Development", "Vocational Training", "Digital Literacy", "Scale Operations"],
+    tags: ["Upskilling", "Education", "Vocational"],
     link: "#",
   },
 ];
@@ -84,9 +84,9 @@ export default function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex flex-col"
+          className="flex flex-col text-left"
         >
-          <span className="text-xs font-mono tracking-[0.4em] uppercase text-blue-500 mb-3">
+          <span className="text-xs font-mono tracking-[0.4em] uppercase text-[#94A3B8] mb-3">
             03 // METRICS & METALS
           </span>
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white leading-tight">
@@ -105,7 +105,7 @@ export default function Projects() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
-            className="group glass-card rounded-2xl overflow-hidden flex flex-col h-full border border-white/5"
+            className="group rounded-2xl overflow-hidden flex flex-col h-full bg-[#0D0D11]/90 border border-white/5 backdrop-blur-xl transition-all duration-500 hover:border-white/10 hover:bg-[#0D0D11]/95"
           >
             {/* Visual Preview Container */}
             <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-white/5">
@@ -114,28 +114,28 @@ export default function Projects() {
                 alt={project.title}
                 fill
                 priority={index === 0}
-                className="object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                className="object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out brightness-[0.7] group-hover:brightness-[0.8] transition-all"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-70" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-50" />
             </div>
 
             {/* Description & Metadata Card */}
             <div className="p-8 flex flex-col flex-grow">
-              <span className="text-[9px] font-mono tracking-[0.25em] text-neutral-400 font-semibold mb-2 uppercase">
+              <span className="text-[9px] font-mono tracking-[0.25em] text-[#94A3B8] font-semibold mb-2 uppercase block text-left">
                 {project.category}
               </span>
-              <h3 className="text-2xl font-bold text-white mb-6 group-hover:text-blue-400 transition-colors duration-300 flex items-center justify-between">
+              <h3 className="text-2xl font-bold text-white mb-6 group-hover:text-blue-400 transition-colors duration-300 flex items-center justify-between text-left">
                 {project.title}
-                <ArrowUpRight className="w-5 h-5 text-neutral-500 group-hover:text-blue-400 transition-colors group-hover:translate-x-0.5 group-hover:-translate-y-0.5 duration-300" />
+                <ArrowUpRight className="w-5 h-5 text-neutral-500 group-hover:text-blue-400 transition-colors group-hover:translate-x-0.5 group-hover:-translate-y-0.5 duration-300 animate-none" />
               </h3>
 
               {/* Metric Spotlight Banner */}
-              <div className="mb-6 px-4 py-3.5 bg-white/[0.02] border border-white/5 rounded-xl flex items-center gap-4">
+              <div className="mb-6 px-4 py-3.5 bg-white/[0.02] border border-white/5 rounded-xl flex items-center gap-4 text-left">
                 <span className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 font-sans tracking-tight">
                   {project.metric}
                 </span>
-                <span className="text-[10px] font-mono uppercase tracking-wider text-neutral-400 font-medium">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#94A3B8] font-medium">
                   {project.metricLabel}
                 </span>
               </div>
@@ -148,7 +148,7 @@ export default function Projects() {
                   <span className="text-[9px] font-mono tracking-wider text-blue-400 uppercase block mb-1 font-semibold">
                     S // Situation
                   </span>
-                  <p className="text-neutral-400 font-light text-[13px] leading-relaxed">
+                  <p className="text-[#94A3B8] font-light text-[13px] leading-relaxed">
                     {project.star.situation}
                   </p>
                 </div>
@@ -159,7 +159,7 @@ export default function Projects() {
                   <span className="text-[9px] font-mono tracking-wider text-indigo-400 uppercase block mb-1 font-semibold">
                     A // Action
                   </span>
-                  <p className="text-neutral-400 font-light text-[13px] leading-relaxed">
+                  <p className="text-[#94A3B8] font-light text-[13px] leading-relaxed">
                     {project.star.action}
                   </p>
                 </div>
@@ -170,7 +170,7 @@ export default function Projects() {
                   <span className="text-[9px] font-mono tracking-wider text-purple-400 uppercase block mb-1 font-semibold">
                     R // Result
                   </span>
-                  <p className="text-neutral-200 font-medium text-[13px] leading-relaxed">
+                  <p className="text-[#94A3B8] font-medium text-[13px] leading-relaxed">
                     {project.star.result}
                   </p>
                 </div>
@@ -181,7 +181,7 @@ export default function Projects() {
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-[9px] font-mono font-medium px-2.5 py-1 bg-white/5 border border-white/5 text-neutral-300 rounded-md"
+                    className="text-[9px] font-mono font-medium px-2.5 py-1 bg-white/5 border border-white/5 text-[#94A3B8] rounded-md"
                   >
                     {tag}
                   </span>
@@ -201,19 +201,19 @@ export default function Projects() {
           transition={{ duration: 0.8 }}
           className="flex flex-col items-center w-full"
         >
-          <span className="text-[10px] font-mono tracking-[0.4em] uppercase text-neutral-500 mb-4">
+          <span className="text-[10px] font-mono tracking-[0.4em] uppercase text-[#94A3B8] mb-4">
             04 // THE CLOSING
           </span>
           <h3 className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight max-w-3xl">
             Bridging deep cognitive AI engineering with <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 font-light italic">certified IT program management at scale.</span>
           </h3>
-          <p className="text-neutral-400 font-light text-sm max-w-lg mb-10 leading-relaxed">
+          <p className="text-[#94A3B8] font-light text-sm max-w-lg mb-10 leading-relaxed">
             Let’s move the needle from technical theory to high-performance operational reality. Let&apos;s build the next operational standard.
           </p>
 
-          {/* Elegant Glow CTA Button */}
+          {/* Elegant Glow CTA Button - bound directly to diwasrathour@gmail.com */}
           <a
-            href="mailto:contact@diwas.dev"
+            href="mailto:diwasrathour@gmail.com"
             className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs tracking-wider uppercase rounded-full shadow-[0_0_30px_rgba(59,130,246,0.25)] hover:shadow-[0_0_40px_rgba(59,130,246,0.45)] transition-all duration-300 flex items-center gap-2.5 group mb-24 cursor-pointer"
           >
             Initiate Conversation
@@ -225,23 +225,26 @@ export default function Projects() {
             
             {/* System Status */}
             <div className="flex flex-col gap-2">
-              <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-neutral-500 font-semibold flex items-center gap-1.5">
+              <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-[#94A3B8] font-semibold flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 System Status
               </span>
-              <p className="text-xs font-light text-neutral-400 leading-relaxed">
+              <p className="text-xs font-light text-[#94A3B8] leading-relaxed">
                 Active / Available for select strategic programs
               </p>
             </div>
 
             {/* Secure Endpoints */}
             <div className="flex flex-col gap-2">
-              <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-neutral-500 font-semibold">
+              <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-[#94A3B8] font-semibold">
                 Secure Endpoints
               </span>
               <div className="flex flex-col gap-1.5">
-                <a href="mailto:contact@diwas.dev" className="text-xs font-light text-neutral-400 hover:text-white transition-colors duration-200 flex items-center gap-1.5 w-fit">
-                  Email: contact@diwas.dev
+                <a href="mailto:diwasrathour@gmail.com" className="text-xs font-light text-neutral-400 hover:text-white transition-colors duration-200 flex items-center gap-1.5 w-fit">
+                  Email: diwasrathour@gmail.com
+                </a>
+                <a href="tel:+9779823619287" className="text-xs font-light text-neutral-400 hover:text-white transition-colors duration-200 flex items-center gap-1.5 w-fit">
+                  Phone: +977 9823619287
                 </a>
                 <a href="#" className="text-xs font-light text-neutral-400 hover:text-white transition-colors duration-200 flex items-center gap-1.5 w-fit">
                   GitHub: github.com/diwas
@@ -254,10 +257,10 @@ export default function Projects() {
 
             {/* Geolocation */}
             <div className="flex flex-col gap-2">
-              <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-neutral-500 font-semibold">
+              <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-[#94A3B8] font-semibold">
                 Geolocation
               </span>
-              <p className="text-xs font-light text-neutral-400 leading-relaxed">
+              <p className="text-xs font-light text-[#94A3B8] leading-relaxed">
                 Kathmandu, Nepal / GMT+5:45
               </p>
             </div>
