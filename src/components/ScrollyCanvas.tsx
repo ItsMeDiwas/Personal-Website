@@ -165,7 +165,7 @@ export default function ScrollyCanvas({ children }: ScrollyCanvasProps) {
   useEffect(() => {
     if (!isPreloaded) return;
 
-    const exitThreshold = 69 / 73; // last 5 frames of the 74-frame sequence (starting at index 69)
+    const exitThreshold = 65 / 73; // last 9 frames of the 74-frame sequence (starting at index 65)
 
     // Snapping Scroll Lock and Smooth exit scroll alignment
     const handleScroll = () => {
@@ -175,7 +175,7 @@ export default function ScrollyCanvas({ children }: ScrollyCanvasProps) {
         }
       } else {
         const scrollY = window.scrollY;
-        const maxScroll = 300; // scroll distance (in px) over which the last 5 frames play
+        const maxScroll = 350; // scroll distance (in px) over which the last 9 frames play
         const progressOffset = Math.min(1 - exitThreshold, (scrollY / maxScroll) * (1 - exitThreshold));
         sequenceProgress.set(exitThreshold + progressOffset);
       }
