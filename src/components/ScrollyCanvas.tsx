@@ -247,9 +247,9 @@ export default function ScrollyCanvas({ children }: ScrollyCanvasProps) {
         e.preventDefault();
         let step = 0;
         if (e.key === "ArrowDown" || e.key === "Space") {
-          step = 0.03;
+          step = 0.03; 
         } else if (e.key === "PageDown") {
-          step = 0.15;
+          step = 0.15; 
         } else if (e.key === "ArrowUp") {
           step = -0.03;
         } else if (e.key === "PageUp") {

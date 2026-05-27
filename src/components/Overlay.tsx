@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { useScroll, useTransform, motion, MotionValue, useMotionValueEvent, AnimatePresence } from "framer-motion";
+import React from "react";
+import { useScroll, useTransform, motion, MotionValue } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 
 interface OverlayProps {
@@ -35,103 +35,86 @@ export default function Overlay({
   const { scrollYProgress: globalScrollYProgress } = useScroll();
   const scrollYProgress = passedScrollYProgress || globalScrollYProgress;
 
-  // Map frame index from scrollYProgress (assuming 74 frames, 0 to 73)
-  const resolvedFrameIndex = frameIndex || useTransform(scrollYProgress, [0, 1], [0, 73]);
+  // SECTION 1 (Diwas Dinesh Rathod): Slides in from the right, right-aligned.
+  // Active range: Scroll 0.0 -> 0.30 (Fully disappears at 0.30)
+  const s0Opacity = useTransform(scrollYProgress, [0, 0.08, 0.24, 0.30], [0, 1, 1, 0]);
+  const s0X = useTransform(scrollYProgress, [0, 0.08, 0.24, 0.30], [120, 0, 0, -80]);
 
-  const [activeSection, setActiveSection] = useState(0);
+  // SECTION 2 (10 Years of Experience): Slides in from the left, left-aligned.
+  // Enters ONLY after Section 1 has fully disappeared (Scroll 0.30 -> 0.60)
+  const s1Opacity = useTransform(scrollYProgress, [0, 0.30, 0.38, 0.54, 0.60], [0, 0, 1, 1, 0]);
+  const s1X = useTransform(scrollYProgress, [0, 0.30, 0.38, 0.54, 0.60], [-120, -120, 0, 0, 80]);
 
-  // Synchronize text content precisely to the background sequence frame index
-  useMotionValueEvent(resolvedFrameIndex, "change", (latest) => {
-    const index = Math.min(73, Math.max(0, Math.round(latest)));
-    let nextSection = 0;
-    
-    // Frame-interval logic:
-    // Frames 0 to 19 (1 to 20): Section 0
-    // Frames 20 to 39 (21 to 40): Section 1
-    // Frames 40+ (41 to 60+): Section 2
-    if (index >= 20 && index < 40) {
-      nextSection = 1;
-    } else if (index >= 40) {
-      nextSection = 2;
-    }
-
-    if (nextSection !== activeSection) {
-      setActiveSection(nextSection);
-    }
-  });
+  // SECTION 3 (5 Years of Experience): Slides up from the bottom, centered.
+  // Enters ONLY after Section 2 has fully disappeared (Scroll 0.60 -> 0.95)
+  const s2Opacity = useTransform(scrollYProgress, [0, 0.60, 0.68, 0.88, 0.95], [0, 0, 1, 1, 0]);
+  const s2Y = useTransform(scrollYProgress, [0, 0.60, 0.68, 0.88, 0.95], [100, 100, 0, 0, -60]);
 
   // Mappings for scroll indicator at the bottom (Fades out quickly)
   const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0]);
 
   return (
     <div className="absolute inset-0 z-10 w-full h-screen pointer-events-none select-none relative overflow-hidden">
-      <AnimatePresence>
-        {/* SECTION 1: Right-aligned (Frames 0 to 19) - Scaled Font */}
-        {activeSection === 0 && (
-          <motion.div
-            key="section-0"
-            initial={{ opacity: 0, x: 40, filter: "blur(6px)" }}
-            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, x: 40, filter: "blur(6px)" }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="absolute inset-y-0 right-8 md:right-20 lg:right-32 flex flex-col justify-center items-end text-right max-w-xl ml-auto px-4"
-          >
-            <span className="text-xs md:text-sm font-mono tracking-[0.4em] uppercase text-white/70 mb-3 animate-pulse">
-              {textContent[0].badge}
-            </span>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-white leading-none">
-              {textContent[0].title}
-            </h1>
-            <p className="mt-4 text-sm md:text-base lg:text-lg font-mono tracking-[0.3em] uppercase text-white/80 font-medium">
-              {textContent[0].subtitle}
-            </p>
-          </motion.div>
-        )}
+      {/* SECTION 1: Right-aligned (Frames 0 to 19) */}
+      <motion.div
+        style={{ 
+          opacity: s0Opacity, 
+          x: s0X,
+          // Hide element completely when inactive to optimize browser rendering
+          pointerEvents: "none"
+        }}
+        className="absolute inset-y-0 right-8 md:right-20 lg:right-32 flex flex-col justify-center items-end text-right max-w-xl ml-auto px-4"
+      >
+        <span className="text-xs md:text-sm font-mono tracking-[0.4em] uppercase text-white/70 mb-3 animate-pulse">
+          {textContent[0].badge}
+        </span>
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-white leading-none">
+          {textContent[0].title}
+        </h1>
+        <p className="mt-4 text-sm md:text-base lg:text-lg font-mono tracking-[0.3em] uppercase text-white/80 font-medium">
+          {textContent[0].subtitle}
+        </p>
+      </motion.div>
 
-        {/* SECTION 2: Left-aligned (Frames 20 to 39) - Scaled Font */}
-        {activeSection === 1 && (
-          <motion.div
-            key="section-1"
-            initial={{ opacity: 0, x: -40, filter: "blur(6px)" }}
-            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, x: -40, filter: "blur(6px)" }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="absolute inset-y-0 left-8 md:left-20 lg:left-32 flex flex-col justify-center items-start text-left max-w-xl px-4"
-          >
-            <span className="text-xs md:text-sm font-mono tracking-[0.4em] uppercase text-white/70 mb-3 animate-pulse">
-              {textContent[1].badge}
-            </span>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-white leading-none">
-              {textContent[1].title}
-            </h1>
-            <p className="mt-4 text-sm md:text-base lg:text-lg font-mono tracking-[0.3em] uppercase text-white/80 font-medium">
-              {textContent[1].subtitle}
-            </p>
-          </motion.div>
-        )}
+      {/* SECTION 2: Left-aligned (Frames 20 to 39) */}
+      <motion.div
+        style={{ 
+          opacity: s1Opacity, 
+          x: s1X,
+          pointerEvents: "none"
+        }}
+        className="absolute inset-y-0 left-8 md:left-20 lg:left-32 flex flex-col justify-center items-start text-left max-w-xl px-4"
+      >
+        <span className="text-xs md:text-sm font-mono tracking-[0.4em] uppercase text-white/70 mb-3 animate-pulse">
+          {textContent[1].badge}
+        </span>
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-white leading-none">
+          {textContent[1].title}
+        </h1>
+        <p className="mt-4 text-sm md:text-base lg:text-lg font-mono tracking-[0.3em] uppercase text-white/80 font-medium">
+          {textContent[1].subtitle}
+        </p>
+      </motion.div>
 
-        {/* SECTION 3: Bottom-center (Frames 40 to 73) - Scaled Font */}
-        {activeSection === 2 && (
-          <motion.div
-            key="section-2"
-            initial={{ opacity: 0, y: 40, filter: "blur(6px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: 40, filter: "blur(6px)" }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="absolute bottom-36 left-0 right-0 flex flex-col justify-center items-center text-center max-w-3xl mx-auto px-6"
-          >
-            <span className="text-xs md:text-sm font-mono tracking-[0.4em] uppercase text-white/70 mb-3 animate-pulse">
-              {textContent[2].badge}
-            </span>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-white leading-none">
-              {textContent[2].title}
-            </h1>
-            <p className="mt-4 text-sm md:text-base lg:text-lg font-mono tracking-[0.3em] uppercase text-white/80 font-medium">
-              {textContent[2].subtitle}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* SECTION 3: Bottom-center (Frames 40 to 73) */}
+      <motion.div
+        style={{ 
+          opacity: s2Opacity, 
+          y: s2Y,
+          pointerEvents: "none"
+        }}
+        className="absolute bottom-36 left-0 right-0 flex flex-col justify-center items-center text-center max-w-3xl mx-auto px-6"
+      >
+        <span className="text-xs md:text-sm font-mono tracking-[0.4em] uppercase text-white/70 mb-3 animate-pulse">
+          {textContent[2].badge}
+        </span>
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-white leading-none">
+          {textContent[2].title}
+        </h1>
+        <p className="mt-4 text-sm md:text-base lg:text-lg font-mono tracking-[0.3em] uppercase text-white/80 font-medium">
+          {textContent[2].subtitle}
+        </p>
+      </motion.div>
 
       {/* Bottom Controls / Elements */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full max-w-xs px-6 flex flex-col items-center gap-6 z-20 pointer-events-none">
