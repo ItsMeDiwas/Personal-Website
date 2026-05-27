@@ -64,43 +64,80 @@ export default function Overlay({
   const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0]);
 
   return (
-    <div className="absolute inset-0 z-10 w-full h-screen pointer-events-none select-none flex flex-col justify-between items-center py-16 md:py-24">
-      {/* Strict Top-pinned Header Layout to keep background image completely unobstructed */}
-      <div className="w-full max-w-5xl px-6 flex flex-col items-center justify-start mt-6 md:mt-10">
-        <div className="relative w-full h-24 md:h-36 flex items-center justify-center">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeSection}
-              initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
-              transition={{ duration: 0.45, ease: "easeOut" }}
-              className="absolute inset-x-0 flex flex-col items-center justify-start text-center px-4"
-            >
-              {/* Slate Gray tracked-out small uppercase index tag */}
-              <span className="text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase text-[#94A3B8] mb-3 animate-pulse">
-                {textContent[activeSection].badge}
-              </span>
-              
-              {/* High-contrast Pure White Title */}
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-none">
-                {textContent[activeSection].title}
-              </h1>
-              
-              {/* Slate Gray tracked-out small uppercase subtitle */}
-              <p className="mt-3 text-xs md:text-sm font-mono tracking-[0.3em] uppercase text-[#94A3B8] font-medium">
-                {textContent[activeSection].subtitle}
-              </p>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
+    <div className="absolute inset-0 z-10 w-full h-screen pointer-events-none select-none relative overflow-hidden">
+      <AnimatePresence>
+        {/* SECTION 1: Left-aligned (Frames 0 to 19) - All White Font */}
+        {activeSection === 0 && (
+          <motion.div
+            key="section-0"
+            initial={{ opacity: 0, x: -40, filter: "blur(6px)" }}
+            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, x: -40, filter: "blur(6px)" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="absolute inset-y-0 left-8 md:left-20 lg:left-32 flex flex-col justify-center items-start text-left max-w-xl px-4"
+          >
+            <span className="text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase text-white/70 mb-3 animate-pulse">
+              {textContent[0].badge}
+            </span>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight text-white leading-none">
+              {textContent[0].title}
+            </h1>
+            <p className="mt-4 text-xs md:text-sm font-mono tracking-[0.3em] uppercase text-white/80 font-medium">
+              {textContent[0].subtitle}
+            </p>
+          </motion.div>
+        )}
+
+        {/* SECTION 2: Right-aligned (Frames 20 to 39) - All White Font */}
+        {activeSection === 1 && (
+          <motion.div
+            key="section-1"
+            initial={{ opacity: 0, x: 40, filter: "blur(6px)" }}
+            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, x: 40, filter: "blur(6px)" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="absolute inset-y-0 right-8 md:right-20 lg:right-32 flex flex-col justify-center items-end text-right max-w-xl ml-auto px-4"
+          >
+            <span className="text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase text-white/70 mb-3 animate-pulse">
+              {textContent[1].badge}
+            </span>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight text-white leading-none">
+              {textContent[1].title}
+            </h1>
+            <p className="mt-4 text-xs md:text-sm font-mono tracking-[0.3em] uppercase text-white/80 font-medium">
+              {textContent[1].subtitle}
+            </p>
+          </motion.div>
+        )}
+
+        {/* SECTION 3: Bottom-center (Frames 40 to 73) - All White Font */}
+        {activeSection === 2 && (
+          <motion.div
+            key="section-2"
+            initial={{ opacity: 0, y: 40, filter: "blur(6px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: 40, filter: "blur(6px)" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="absolute bottom-36 left-0 right-0 flex flex-col justify-center items-center text-center max-w-3xl mx-auto px-6 animate-once"
+          >
+            <span className="text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase text-white/70 mb-3 animate-pulse">
+              {textContent[2].badge}
+            </span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-none">
+              {textContent[2].title}
+            </h1>
+            <p className="mt-4 text-xs md:text-sm font-mono tracking-[0.3em] uppercase text-white/80 font-medium">
+              {textContent[2].subtitle}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Bottom Controls / Elements */}
-      <div className="relative w-full max-w-xs px-6 flex flex-col items-center gap-6 mt-auto">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full max-w-xs px-6 flex flex-col items-center gap-6 z-20 pointer-events-none">
         {/* Dynamic progress bar timeline */}
         <div className="w-full flex flex-col items-center">
-          <span className="text-[8px] font-mono uppercase tracking-[0.3em] text-[#94A3B8] mb-2 font-medium">
+          <span className="text-[8px] font-mono uppercase tracking-[0.3em] text-white/50 mb-2 font-medium">
             Timeline Progress
           </span>
           <div className="w-full h-[1px] bg-white/5 rounded-full overflow-hidden relative">
@@ -116,7 +153,7 @@ export default function Overlay({
           style={{ opacity: scrollIndicatorOpacity }}
           className="flex flex-col items-center justify-center"
         >
-          <span className="text-[9px] font-mono uppercase tracking-[0.25em] text-[#94A3B8] mb-1.5 font-medium">
+          <span className="text-[9px] font-mono uppercase tracking-[0.25em] text-white/50 mb-1.5 font-medium">
             Scroll to Explore
           </span>
           <motion.div 
@@ -124,7 +161,7 @@ export default function Overlay({
             transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
             className="flex items-center justify-center"
           >
-            <ArrowDown className="w-3.5 h-3.5 text-[#94A3B8]" />
+            <ArrowDown className="w-3.5 h-3.5 text-white/50" />
           </motion.div>
         </motion.div>
       </div>
