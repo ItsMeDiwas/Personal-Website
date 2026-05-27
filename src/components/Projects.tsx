@@ -152,7 +152,7 @@ export default function Projects() {
                     {project.star.situation}
                   </p>
                 </div>
-                
+
                 {/* A - Action */}
                 <div className="relative">
                   <div className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-indigo-400 border-2 border-[#121212]" />
@@ -163,7 +163,7 @@ export default function Projects() {
                     {project.star.action}
                   </p>
                 </div>
-                
+
                 {/* R - Result */}
                 <div className="relative">
                   <div className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-purple-400 border-2 border-[#121212]" />
@@ -222,7 +222,7 @@ export default function Projects() {
 
           {/* Clean Contact Metadata Grid (Web Strategist Blueprint) */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full border-t border-white/5 pt-12 text-left max-w-5xl">
-            
+
             {/* System Status */}
             <div className="flex flex-col gap-2">
               <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-[#94A3B8] font-semibold flex items-center gap-1.5">
@@ -264,7 +264,7 @@ export default function Projects() {
                 Kathmandu, Nepal / GMT+5:45
               </p>
             </div>
-            
+
           </div>
 
           <p className="text-[10px] font-mono text-neutral-600 mt-16">

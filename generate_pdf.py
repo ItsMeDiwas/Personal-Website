@@ -450,12 +450,12 @@ def build_blueprint_pdf(filename="Personal_Website_Technical_Blueprint.pdf"):
     story.append(Paragraph(hijack_p1, styles["TechBody"]))
 
     story.append(Paragraph("The Multi-Layer Interception System:", styles["SubSecHeader"]))
-    story.append(Paragraph("&bull; <b>Snapping Scroll Trap:</b> A global scroll listener locks the viewport at absolute top (<font face='Courier'>window.scrollY = 0</font>) while the interactive sequence progress is between 0.0 and 0.999. If the user attempts to scroll the page using scrollbars, the browser viewport instantly snaps back.", styles["BulletText"]))
-    story.append(Paragraph("&bull; <b>Mouse Wheel Interception:</b> The mouse <font face='Courier'>wheel</font> event is registered with <font face='Courier'>{ passive: false }</font>. Calling <font face='Courier'>e.preventDefault()</font> stops the browser's default scroll action. A scroll velocity delta is instead computed: <font face='Courier'>deltaY * 0.0004</font>, updating the virtual timeline progress.", styles["BulletText"]))
-    story.append(Paragraph("&bull; <b>Mobile Touch Swipe Integration:</b> Touch starts register the initial touch coordinates on <font face='Courier'>touchstart</font>. Subsequent drag actions trigger <font face='Courier'>touchmove</font>, calculating a vertical travel delta. This swipe distance is scaled by a fine-tuned touch factor (<font face='Courier'>0.0012</font>) and added to the progress timeline, ensuring full mobile touch compatibility.", styles["BulletText"]))
+    story.append(Paragraph("&bull; <b>Snapping Scroll Trap:</b> A global scroll listener locks the viewport at absolute top (<font face='Courier'>window.scrollY = 0</font>) while the interactive sequence progress is between 0.0 and the exit threshold of 0.945 (index 69). If the user attempts to scroll the page using scrollbars, the browser viewport instantly snaps back.", styles["BulletText"]))
+    story.append(Paragraph("&bull; <b>Mouse Wheel Interception:</b> The mouse <font face='Courier'>wheel</font> event is registered with <font face='Courier'>{ passive: false }</font>. Calling <font face='Courier'>e.preventDefault()</font> stops the browser's default scroll action. A scroll velocity delta is instead computed: <font face='Courier'>deltaY * 0.0006</font>, updating the virtual timeline progress.", styles["BulletText"]))
+    story.append(Paragraph("&bull; <b>Mobile Touch Swipe Integration:</b> Touch starts register the initial touch coordinates on <font face='Courier'>touchstart</font>. Subsequent drag actions trigger <font face='Courier'>touchmove</font>, calculating a vertical travel delta. This swipe distance is scaled by a fine-tuned touch factor (<font face='Courier'>0.002</font>) and added to the progress timeline, ensuring full mobile touch compatibility.", styles["BulletText"]))
     story.append(Paragraph("&bull; <b>Hardware Keyboard Trapper:</b> Keydown events are listened to for navigation keystrokes like <font face='Courier'>ArrowDown</font>, <font face='Courier'>ArrowUp</font>, <font face='Courier'>PageDown</font>, <font face='Courier'>PageUp</font>, and <font face='Courier'>Space</font>. These are blocked via preventDefault, updating the sequence progress by fine-tuned numeric increments (e.g., +/- 0.01 for arrows).", styles["BulletText"]))
     story.append(Paragraph("&bull; <b>Dynamic Speed Dampening:</b> To ensure highly comfortable reading windows, the system automatically slows down scroll progress velocity by <b>3.5x</b> as soon as any text block slides into its final, fully visible position. This dampening is active across three designated reading zones: <i>0.04 to 0.26</i>, <i>0.34 to 0.56</i>, and <i>0.64 to 0.86</i>. When crossing between these zones, the velocity naturally speeds up to produce snappy visual transitions.", styles["BulletText"]))
-    story.append(Paragraph("&bull; <b>Unlocking Threshold:</b> The moment <font face='Courier'>sequenceProgress</font> reaches exactly 1.0, the event interceptors release their active preventDefault traps. This allows the page to naturally scroll down to <b>Section 2: The Operational Edge</b> and <b>Section 3: Featured Impact</b>.", styles["BulletText"]))
+    story.append(Paragraph("&bull; <b>Unlocking & Seamless Page Transition:</b> The moment <font face='Courier'>sequenceProgress</font> reaches `69/73` (approx. 0.945), the scroll trap releases early. As the page naturally scrolls down through the first 300px, a scroll listener maps the scrollY offset to animate the remaining 5 frames of the sequence seamlessly.", styles["BulletText"]))
 
     story.append(Paragraph("Interception Lifecycle Logic:", styles["SubSecHeader"]))
     
@@ -467,14 +467,14 @@ def build_blueprint_pdf(filename="Personal_Website_Technical_Blueprint.pdf"):
         "    if (!isSequenceFinished) {\n"
         "        e.preventDefault();\n"
         "        const delta = e.deltaY;\n"
-        "        const speed = 0.0004;\n"
+        "        const speed = 0.0006;\n"
         "        let nextProgress = sequenceProgress.get() + delta * speed;\n"
-        "        nextProgress = Math.max(0, Math.min(1, nextProgress));\n"
+        "        nextProgress = Math.max(0, Math.min(exitThreshold, nextProgress));\n"
         "        sequenceProgress.set(nextProgress);\n"
-        "        if (nextProgress === 1 && delta > 0) {\n"
+        "        if (nextProgress >= exitThreshold && delta > 0) {\n"
         "            setIsSequenceFinished(true);\n"
         "        }\n"
-        "    } else if (isSequenceFinished && e.deltaY < 0) {\n"
+        "    } else if (isSequenceFinished && e.deltaY < 0 && window.scrollY <= 2) {\n"
         "        e.preventDefault();\n"
         "        setIsSequenceFinished(false);\n"
         "        // lock scroll and scrub back up...\n"

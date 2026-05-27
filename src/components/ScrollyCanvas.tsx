@@ -165,10 +165,19 @@ export default function ScrollyCanvas({ children }: ScrollyCanvasProps) {
   useEffect(() => {
     if (!isPreloaded) return;
 
-    // Snapping Scroll Lock
-    const handleScrollSnapLock = () => {
-      if (!isSequenceFinished && window.scrollY > 0) {
-        window.scrollTo(0, 0);
+    const exitThreshold = 69 / 73; // last 5 frames of the 74-frame sequence (starting at index 69)
+
+    // Snapping Scroll Lock and Smooth exit scroll alignment
+    const handleScroll = () => {
+      if (!isSequenceFinished) {
+        if (window.scrollY > 0) {
+          window.scrollTo(0, 0);
+        }
+      } else {
+        const scrollY = window.scrollY;
+        const maxScroll = 300; // scroll distance (in px) over which the last 5 frames play
+        const progressOffset = Math.min(1 - exitThreshold, (scrollY / maxScroll) * (1 - exitThreshold));
+        sequenceProgress.set(exitThreshold + progressOffset);
       }
     };
 
@@ -180,23 +189,23 @@ export default function ScrollyCanvas({ children }: ScrollyCanvasProps) {
       if (!isSequenceFinished) {
         e.preventDefault();
         const delta = e.deltaY;
-        const speed = 0.0012; // buttery scroll progress velocity
+        const speed = 0.0006; // buttery scroll progress velocity (reduced from 0.0012 to make it slower)
         let nextProgress = sequenceProgress.get() + delta * speed;
-        nextProgress = Math.max(0, Math.min(1, nextProgress));
+        nextProgress = Math.max(0, Math.min(exitThreshold, nextProgress));
         sequenceProgress.set(nextProgress);
 
-        if (nextProgress === 1 && delta > 0) {
+        if (nextProgress >= exitThreshold && delta > 0) {
           setIsSequenceFinished(true);
         }
-      } else if (isSequenceFinished && e.deltaY < 0) {
+      } else if (isSequenceFinished && e.deltaY < 0 && window.scrollY <= 2) {
         // Re-locking scrolling when reaching top and wheeling up
         e.preventDefault();
         setIsSequenceFinished(false);
 
         const delta = e.deltaY;
-        const speed = 0.0012;
-        let nextProgress = sequenceProgress.get() + delta * speed;
-        nextProgress = Math.max(0, Math.min(1, nextProgress));
+        const speed = 0.0006; // matching wheel speed
+        let nextProgress = exitThreshold + delta * speed;
+        nextProgress = Math.max(0, Math.min(exitThreshold, nextProgress));
         sequenceProgress.set(nextProgress);
       }
     };
@@ -216,21 +225,21 @@ export default function ScrollyCanvas({ children }: ScrollyCanvasProps) {
 
       if (!isSequenceFinished) {
         e.preventDefault();
-        const speed = 0.0035;
+        const speed = 0.002; // touch swipe sensitivity (reduced from 0.0035)
         let nextProgress = sequenceProgress.get() + deltaY * speed;
-        nextProgress = Math.max(0, Math.min(1, nextProgress));
+        nextProgress = Math.max(0, Math.min(exitThreshold, nextProgress));
         sequenceProgress.set(nextProgress);
 
-        if (nextProgress === 1 && deltaY > 0) {
+        if (nextProgress >= exitThreshold && deltaY > 0) {
           setIsSequenceFinished(true);
         }
-      } else if (isSequenceFinished && deltaY < 0) {
+      } else if (isSequenceFinished && deltaY < 0 && window.scrollY <= 2) {
         e.preventDefault();
         setIsSequenceFinished(false);
 
-        const speed = 0.0035;
-        let nextProgress = sequenceProgress.get() + deltaY * speed;
-        nextProgress = Math.max(0, Math.min(1, nextProgress));
+        const speed = 0.002;
+        let nextProgress = exitThreshold + deltaY * speed;
+        nextProgress = Math.max(0, Math.min(exitThreshold, nextProgress));
         sequenceProgress.set(nextProgress);
       }
     };
@@ -247,42 +256,42 @@ export default function ScrollyCanvas({ children }: ScrollyCanvasProps) {
         e.preventDefault();
         let step = 0;
         if (e.key === "ArrowDown" || e.key === "Space") {
-          step = 0.03; 
+          step = 0.015; // smaller steps for Arrow/Space (reduced from 0.03)
         } else if (e.key === "PageDown") {
-          step = 0.15; 
+          step = 0.08;  // smaller PageDown step (reduced from 0.15)
         } else if (e.key === "ArrowUp") {
-          step = -0.03;
+          step = -0.015;
         } else if (e.key === "PageUp") {
-          step = -0.15;
+          step = -0.08;
         }
 
         let nextProgress = sequenceProgress.get() + step;
-        nextProgress = Math.max(0, Math.min(1, nextProgress));
+        nextProgress = Math.max(0, Math.min(exitThreshold, nextProgress));
         sequenceProgress.set(nextProgress);
 
-        if (nextProgress === 1 && step > 0) {
+        if (nextProgress >= exitThreshold && step > 0) {
           setIsSequenceFinished(true);
         }
-      } else if (isSequenceFinished && (e.key === "ArrowUp" || e.key === "PageUp")) {
+      } else if (isSequenceFinished && (e.key === "ArrowUp" || e.key === "PageUp") && window.scrollY <= 2) {
         e.preventDefault();
         setIsSequenceFinished(false);
 
-        const step = e.key === "ArrowUp" ? -0.03 : -0.15;
-        let nextProgress = sequenceProgress.get() + step;
-        nextProgress = Math.max(0, Math.min(1, nextProgress));
+        const step = e.key === "ArrowUp" ? -0.015 : -0.08;
+        let nextProgress = exitThreshold + step;
+        nextProgress = Math.max(0, Math.min(exitThreshold, nextProgress));
         sequenceProgress.set(nextProgress);
       }
     };
 
     // Attach Listeners
-    window.addEventListener("scroll", handleScrollSnapLock);
+    window.addEventListener("scroll", handleScroll);
     window.addEventListener("wheel", handleWheel, { passive: false });
     window.addEventListener("touchstart", handleTouchStart, { passive: true });
     window.addEventListener("touchmove", handleTouchMove, { passive: false });
     window.addEventListener("keydown", handleKeyDown, { passive: false });
 
     return () => {
-      window.removeEventListener("scroll", handleScrollSnapLock);
+      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("wheel", handleWheel);
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
