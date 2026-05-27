@@ -1,5 +1,6 @@
 import ScrollyCanvas from "@/components/ScrollyCanvas";
 import Overlay from "@/components/Overlay";
+import Pillars from "@/components/Pillars";
 import Projects from "@/components/Projects";
 
 export default function Home() {
@@ -10,8 +11,12 @@ export default function Home() {
         <Overlay />
       </ScrollyCanvas>
 
+      {/* Section 2: THE OPERATIONAL EDGE (Core Pillars) */}
+      <Pillars />
+
       {/* 100vh+ Awwwards Glassmorphic Selected Projects Section */}
       <Projects />
     </main>
   );
 }
+

@@ -1,119 +1,133 @@
 "use client";
 
-import { useScroll, useTransform, motion, MotionValue } from "framer-motion";
+import React, { useState } from "react";
+import { useScroll, useTransform, motion, MotionValue, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 
 interface OverlayProps {
   scrollYProgress?: MotionValue<number>;
+  frameIndex?: MotionValue<number>;
 }
 
-export default function Overlay({ scrollYProgress: passedScrollYProgress }: OverlayProps) {
+const textContent = [
+  {
+    title: "Diwas Dinesh Rathod",
+    subtitle: "Program Manager",
+    badge: "01 // LEADERSHIP"
+  },
+  {
+    title: "10 Years of Experience",
+    subtitle: "In Project Management",
+    badge: "02 // STRATEGIC DELIVERY"
+  },
+  {
+    title: "5 Years of Experience",
+    subtitle: "In AI Automation",
+    badge: "03 // COGNITIVE OPERATIONS"
+  }
+];
+
+export default function Overlay({ 
+  scrollYProgress: passedScrollYProgress,
+  frameIndex 
+}: OverlayProps) {
   // Listen to global window scroll progress as fallback
   const { scrollYProgress: globalScrollYProgress } = useScroll();
   const scrollYProgress = passedScrollYProgress || globalScrollYProgress;
 
-  // Mappings for Section 1: Introduction (Center aligned)
-  // Visible: 0 to 0.15, Fades out: 0.15 to 0.25
-  const opacity1 = useTransform(scrollYProgress, [0, 0.12, 0.22], [1, 1, 0]);
-  const y1 = useTransform(scrollYProgress, [0, 0.22], [0, -120]);
-  const scale1 = useTransform(scrollYProgress, [0, 0.22], [1, 0.95]);
+  // Map frame index from scrollYProgress (assuming 74 frames, 0 to 73)
+  const resolvedFrameIndex = frameIndex || useTransform(scrollYProgress, [0, 1], [0, 73]);
 
-  // Mappings for Section 2: Core focus (Left aligned)
-  // Fades in: 0.22 to 0.32, Active: 0.32 to 0.45, Fades out: 0.45 to 0.55
-  const opacity2 = useTransform(scrollYProgress, [0.18, 0.28, 0.42, 0.52], [0, 1, 1, 0]);
-  const y2 = useTransform(scrollYProgress, [0.18, 0.28, 0.42, 0.52], [100, 0, 0, -100]);
-  
-  // Mappings for Section 3: Vision (Right aligned)
-  // Fades in: 0.52 to 0.62, Active: 0.62 to 0.75, Fades out: 0.75 to 0.88
-  const opacity3 = useTransform(scrollYProgress, [0.48, 0.58, 0.72, 0.82], [0, 1, 1, 0]);
-  const y3 = useTransform(scrollYProgress, [0.48, 0.58, 0.72, 0.82], [100, 0, 0, -100]);
+  const [activeSection, setActiveSection] = useState(0);
+
+  // Synchronize text content precisely to the background sequence frame index
+  useMotionValueEvent(resolvedFrameIndex, "change", (latest) => {
+    const index = Math.min(73, Math.max(0, Math.round(latest)));
+    let nextSection = 0;
+    
+    // Frame-interval logic:
+    // Frames 0 to 19 (1 to 20): Section 0
+    // Frames 20 to 39 (21 to 40): Section 1
+    // Frames 40+ (41 to 60+): Section 2
+    if (index >= 20 && index < 40) {
+      nextSection = 1;
+    } else if (index >= 40) {
+      nextSection = 2;
+    }
+
+    if (nextSection !== activeSection) {
+      setActiveSection(nextSection);
+    }
+  });
 
   // Mappings for scroll indicator at the bottom (Fades out quickly)
   const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0]);
 
   return (
-    <div className="absolute inset-0 z-10 w-full pointer-events-none select-none">
-      {/* SECTION 1: Introduction (Left Aligned / Off-center layout) */}
-      <motion.div
-        style={{ opacity: opacity1, y: y1, scale: scale1 }}
-        className="fixed inset-0 flex flex-col justify-center items-start px-8 md:px-24 lg:px-36 text-left max-w-5xl"
-      >
-        <span className="text-xs font-mono tracking-[0.4em] uppercase text-blue-500 mb-6 animate-pulse">
-          01 // INTRODUCTION
-        </span>
-        <h1 className="text-5xl md:text-8xl font-black tracking-tight text-white leading-none">
-          Diwas Rathod
-        </h1>
-        <div className="mt-4 flex flex-col gap-2 max-w-3xl">
-          <h2 className="text-xl md:text-3xl font-medium tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
-            AI Enthusiast & Program Manager
-          </h2>
-          <h3 className="text-lg md:text-2xl font-light text-neutral-400">
-            Creative Video Editor & Former Full-Stack Developer
-          </h3>
+    <div className="absolute inset-0 z-10 w-full h-screen pointer-events-none select-none flex flex-col justify-between items-center py-16 md:py-24">
+      {/* Strict Top-pinned Header Layout to keep background image completely unobstructed */}
+      <div className="w-full max-w-5xl px-6 flex flex-col items-center justify-start mt-6 md:mt-10">
+        <div className="relative w-full h-24 md:h-36 flex items-center justify-center">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeSection}
+              initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+              className="absolute inset-x-0 flex flex-col items-center justify-start text-center px-4"
+            >
+              {/* Slate Gray tracked-out small uppercase index tag */}
+              <span className="text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase text-[#94A3B8] mb-3 animate-pulse">
+                {textContent[activeSection].badge}
+              </span>
+              
+              {/* High-contrast Pure White Title */}
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-none">
+                {textContent[activeSection].title}
+              </h1>
+              
+              {/* Slate Gray tracked-out small uppercase subtitle */}
+              <p className="mt-3 text-xs md:text-sm font-mono tracking-[0.3em] uppercase text-[#94A3B8] font-medium">
+                {textContent[activeSection].subtitle}
+              </p>
+            </motion.div>
+          </AnimatePresence>
         </div>
-        
-        {/* Intro text positioned off-center left below the headers */}
-        <p className="mt-8 text-sm md:text-base font-light text-neutral-400 max-w-md leading-relaxed border-l-2 border-indigo-500/50 pl-4">
-          A dynamic leader bridging the gap between deep technical execution, high-fidelity storytelling, and strategic project management, all driven by a passion for AI.
-        </p>
+      </div>
+
+      {/* Bottom Controls / Elements */}
+      <div className="relative w-full max-w-xs px-6 flex flex-col items-center gap-6 mt-auto">
+        {/* Dynamic progress bar timeline */}
+        <div className="w-full flex flex-col items-center">
+          <span className="text-[8px] font-mono uppercase tracking-[0.3em] text-[#94A3B8] mb-2 font-medium">
+            Timeline Progress
+          </span>
+          <div className="w-full h-[1px] bg-white/5 rounded-full overflow-hidden relative">
+            <motion.div 
+              className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"
+              style={{ width: useTransform(scrollYProgress, [0, 1], ["0%", "100%"]) }}
+            />
+          </div>
+        </div>
 
         {/* Scroll Indicator Prompt */}
         <motion.div 
           style={{ opacity: scrollIndicatorOpacity }}
-          className="absolute bottom-12 flex flex-col items-start"
+          className="flex flex-col items-center justify-center"
         >
-          <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-neutral-500 mb-2">
+          <span className="text-[9px] font-mono uppercase tracking-[0.25em] text-[#94A3B8] mb-1.5 font-medium">
             Scroll to Explore
           </span>
-          <div className="relative flex items-center justify-center pl-4">
-            <motion.div 
-              animate={{ y: [0, 6, 0] }}
-              transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-            >
-              <ArrowDown className="w-4 h-4 text-neutral-500" />
-            </motion.div>
-          </div>
+          <motion.div 
+            animate={{ y: [0, 4, 0] }}
+            transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+            className="flex items-center justify-center"
+          >
+            <ArrowDown className="w-3.5 h-3.5 text-[#94A3B8]" />
+          </motion.div>
         </motion.div>
-      </motion.div>
-
-      {/* SECTION 2: Program Management & AI Integration (Left Aligned) */}
-      <motion.div
-        style={{ opacity: opacity2, y: y2 }}
-        className="fixed inset-0 flex flex-col justify-center px-8 md:px-24 lg:px-36 max-w-4xl"
-      >
-        <span className="text-xs font-mono tracking-[0.4em] uppercase text-blue-400 mb-4">
-          02 // DIRECT & SCALE
-        </span>
-        <h2 className="text-4xl md:text-7xl font-bold tracking-tight text-white leading-tight">
-          Orchestrating Complex
-          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
-            AI Workflows.
-          </span>
-        </h2>
-        <p className="mt-6 text-neutral-400 font-light text-base md:text-lg max-w-xl leading-relaxed">
-          As a strategic Program Manager and AI Enthusiast, I lead cross-functional squads to architect robust intelligent systems, orchestrate advanced language models, and scale high-impact automation pipelines.
-        </p>
-      </motion.div>
-
-      {/* SECTION 3: Video Editing & Creative Media (Right Aligned) */}
-      <motion.div
-        style={{ opacity: opacity3, y: y3 }}
-        className="fixed inset-0 flex flex-col justify-center items-end px-8 md:px-24 lg:px-36 text-right ml-auto max-w-4xl"
-      >
-        <span className="text-xs font-mono tracking-[0.4em] uppercase text-purple-400 mb-4">
-          03 // PACING & RHYTHM
-        </span>
-        <h2 className="text-4xl md:text-7xl font-bold tracking-tight text-white leading-tight">
-          Crafting High-Energy
-          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-            Visual Narratives.
-          </span>
-        </h2>
-        <p className="mt-6 text-neutral-400 font-light text-base md:text-lg max-w-xl leading-relaxed ml-auto">
-          Uniting technical mechanics with raw creative vision. I direct and edit high-impact video campaigns using dynamic cutting, rhythmic motion design, precise color grading, and immersive soundscapes that hook and hold attention.
-        </p>
-      </motion.div>
+      </div>
     </div>
   );
 }
